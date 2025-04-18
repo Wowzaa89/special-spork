@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scratch-to-JS Compiler</title>
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #1e1e1e;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #blocklyDiv {
+      height: 400px;
+      width: 80%;
+      margin-top: 20px;
+    }
+
+    #controls {
+      margin: 10px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      background: #00cc66;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00994d;
+    }
+
+    pre {
+      background: #2a2a2a;
+      padding: 10px;
+      width: 80%;
+      overflow-x: auto;
+      border-radius: 5px;
+      color: #00ffcc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧩 Scratch-to-JS Compiler</h1>
+  <div id="blocklyDiv"></div>
+
+  <div id="controls">
+    <button onclick="compileCode()">Compile</button>
+  </div>
+
+  <h3>🧠 Compiled JavaScript:</h3>
+  <pre id="output">// Your JS code will appear here</pre>
+
+  <xml id="toolbox" style="display: none">
+    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+    </category>
+    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="Math" colour="%{BKY_MATH_HUE}">
+      <block type="math_number">
+        <field name="NUM">10</field>
+      </block>
+    </category>
+    <category name="Text" colour="%{BKY_TEXTS_HUE}">
+      <block type="text">
+        <field name="TEXT">Hello!</field>
+      </block>
+      <block type="text_print"></block>
+    </category>
+  </xml>
+
+  <script>
+    const workspace = Blockly.inject('blocklyDiv', {
+      toolbox: document.getElementById('toolbox'),
+      theme: Blockly.Themes.Dark
+    });
+
+    function compileCode() {
+      const jsCode = Blockly.JavaScript.workspaceToCode(workspace);
+      document.getElementById('output').textContent = jsCode || "// No blocks to compile!";
+    }
+  </script>
+</body>
+</html>
